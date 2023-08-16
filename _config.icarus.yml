@@ -204,9 +204,9 @@ widgets:
         follow_link: https://github.com/isunweihan
         # Links to be shown on the bottom of the profile widget
         social_links:
-            Github:
-                icon: fab fa-github
-                url: https://github.com/isunweihan
+            # Github:
+            #     icon: fab fa-github
+            #     url: https://github.com/isunweihan
             # Facebook:
             #     icon: fab fa-facebook
             #     url: https://facebook.com
