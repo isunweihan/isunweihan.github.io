@@ -4,6 +4,9 @@ git add .
 git commit -m "Update blog"
 git push 
 echo Changes committed and pushed.
+echo Start install...
+call npm install
+echo Install finished.
 echo Start cleaning...
 call npm run clean
 echo Cleaning finished.
