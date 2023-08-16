@@ -106,9 +106,9 @@ head:
 navbar:
     # Navigation menu items
     menu:
-        Home: /
-        Tags: /tags
-        Archives: /archives
+        首页: /
+        标签: /tags
+        归档: /archives
         # Categories: /categories
         # About: /about
     # Links to be shown on the right of the navigation bar
