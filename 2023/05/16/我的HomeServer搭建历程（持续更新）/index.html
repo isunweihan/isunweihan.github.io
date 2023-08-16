@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>我的HomeServer搭建历程（持续更新） - 岁寒</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#3273dc"><meta name="application-name" content="岁寒"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#3273dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="岁寒"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="HomeServer，也被称为NAS、All-in-one等，是指家庭中的服务器环境，硬件多种多样，如树莓派、群晖、专用服务器、普通家用计算机等均可，通常运行群晖DSM、Unraid、FreeNAS等定制操作系统，也可选择Windows、Linux等通用操作系统，通过Docker、虚拟机等方式部署一系列自托管（Self-host）服务，如影音库、私人云盘、个人网站等等。"><meta property="og:type" content="blog"><meta property="og:title" content="我的HomeServer搭建历程（持续更新）"><meta property="og:url" content="https://sun-weihan.github.io/2023/05/16/%E6%88%91%E7%9A%84HomeServer%E6%90%AD%E5%BB%BA%E5%8E%86%E7%A8%8B%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/"><meta property="og:site_name" content="岁寒"><meta property="og:description" content="HomeServer，也被称为NAS、All-in-one等，是指家庭中的服务器环境，硬件多种多样，如树莓派、群晖、专用服务器、普通家用计算机等均可，通常运行群晖DSM、Unraid、FreeNAS等定制操作系统，也可选择Windows、Linux等通用操作系统，通过Docker、虚拟机等方式部署一系列自托管（Self-host）服务，如影音库、私人云盘、个人网站等等。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://sun-weihan.github.io/img/og_image.png"><meta property="article:published_time" content="2023-05-16T15:05:02.000Z"><meta property="article:modified_time" content="2023-08-16T13:51:37.631Z"><meta property="article:author" content="sunweihan"><meta property="article:tag" content="运维"><meta property="article:tag" content="HomeServer"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://sun-weihan.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://sun-weihan.github.io/2023/05/16/%E6%88%91%E7%9A%84HomeServer%E6%90%AD%E5%BB%BA%E5%8E%86%E7%A8%8B%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/"},"headline":"我的HomeServer搭建历程（持续更新）","image":["https://sun-weihan.github.io/img/og_image.png"],"datePublished":"2023-05-16T15:05:02.000Z","dateModified":"2023-08-16T13:51:37.631Z","author":{"@type":"Person","name":"sunweihan"},"publisher":{"@type":"Organization","name":"岁寒","logo":{"@type":"ImageObject","url":{"text":"岁寒"}}},"description":"HomeServer，也被称为NAS、All-in-one等，是指家庭中的服务器环境，硬件多种多样，如树莓派、群晖、专用服务器、普通家用计算机等均可，通常运行群晖DSM、Unraid、FreeNAS等定制操作系统，也可选择Windows、Linux等通用操作系统，通过Docker、虚拟机等方式部署一系列自托管（Self-host）服务，如影音库、私人云盘、个人网站等等。"}</script><link rel="canonical" href="https://sun-weihan.github.io/2023/05/16/%E6%88%91%E7%9A%84HomeServer%E6%90%AD%E5%BB%BA%E5%8E%86%E7%A8%8B%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/monokai.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">岁寒</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/archives">归档</a></div><div class="navbar-end"><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-05-16T15:05:02.000Z" title="2023/5/16 23:05:02">2023-05-16</time>发表</span><span class="level-item"><time dateTime="2023-08-16T13:51:37.631Z" title="2023/8/16 21:51:37">2023-08-16</time>更新</span><span class="level-item">6 分钟读完 (大约907个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">我的HomeServer搭建历程（持续更新）</h1><div class="content"><p>HomeServer，也被称为NAS、All-in-one等，是指家庭中的服务器环境，硬件多种多样，如树莓派、群晖、专用服务器、普通家用计算机等均可，通常运行群晖DSM、Unraid、FreeNAS等定制操作系统，也可选择Windows、Linux等通用操作系统，通过Docker、虚拟机等方式部署一系列自托管（Self-host）服务，如影音库、私人云盘、个人网站等等。<span id="more"></span></p>
+<p>我从2014年左右开始使用，至今已经六七年，期间软硬件环境也经历了多次迭代，写篇文章记录下迭代过程和做过的对比方案，记录生活的同时也给其他人做一些参考。如有变化本文章也会持续更新。</p>
+<h1 id="2020-至今：自组高性能服务器"><a href="#2020-至今：自组高性能服务器" class="headerlink" title="2020~至今：自组高性能服务器"></a>2020~至今：自组高性能服务器</h1><p>先上硬件配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CPU：i9-9900T ES</span><br><span class="line">主板：微星B360M Mortar</span><br><span class="line">内存：玖合 16G 2666Mhz</span><br><span class="line">电源：振华铜皇450W</span><br><span class="line">机箱：追风者416PTG</span><br><span class="line">CPU散热器：利民AS120</span><br></pre></td></tr></table></figure>
+
+<p>大家应该都看得出来，这都是一些普通台式PC的配件。没错，HomeServer与普通台式PC并没有本质上的区别，普通台式PC完全可以胜任。英特尔8代及之后的CPU在低负载的情况下，功耗相当低，7×24小时使用完全不用担心电费。</p>
+<p>而且，相对于专用硬件高额的溢价，这些普通货的价格亲民很多，能够省下不少预算。</p>
+<p>最后，说一下选择建议：</p>
+<ol>
+<li>首先如果你有闲置的硬件，只要它不是太过时，那可以直接复用。</li>
+<li>机箱：尽量选择盘位多的，我选择追风者416PTG原因有三：一是至多8个硬盘位；二是兼容性强，主板、CPU散热器、电源等可选多；三是我恰好有一个闲置的。但是也有缺点：硬盘位需要额外购买扩展组件；体积过于大了。</li>
+<li>主板：能不用ITX就不用ITX，一方面ITX太贵，溢价太高，另一方面内存插槽、SATA等接口较少。推荐NAS专用的主板，SATA等接口较多，虽然可以扩展，但不如原生。</li>
+<li>CPU：一般来说买英特尔较新代的i3即可，考虑到价格因素（CPU和主板的价格），8代及之后的都可以选择，性能上一般使用感知不强。注意不要买型号后缀带F的。</li>
+<li>电源：尽量选择大牌口碑好的，7×24小时运行更需要稳定性，而且它一旦坏了可能会带走你的硬盘。</li>
+<li>CPU散热器和内存随意。</li>
+</ol>
+<p>这一套下来，基本上作为家用服务器，完全不用担心性能。毕竟酷睿i3的性能已经领先赛扬系列几个级别，其他人能运行的服务这里都可以运行。</p>
+<h1 id="2017-2019：自组低功耗服务器"><a href="#2017-2019：自组低功耗服务器" class="headerlink" title="2017~2019：自组低功耗服务器"></a>2017~2019：自组低功耗服务器</h1><p>&#x2F;&#x2F; 占坑待补充。选择的是N3160主板集成CPU。</p>
+<h1 id="2014-2017：路由器挂载硬盘、笔记本电脑共享"><a href="#2014-2017：路由器挂载硬盘、笔记本电脑共享" class="headerlink" title="2014~2017：路由器挂载硬盘、笔记本电脑共享"></a>2014~2017：路由器挂载硬盘、笔记本电脑共享</h1><p>&#x2F;&#x2F; 占坑待补充。这段时间通过路由器挂载硬盘方式运行影音库服务，同时偶尔使用笔记本电脑给其他人共享资料，算是家用服务器的萌芽阶段。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>我的HomeServer搭建历程（持续更新）</p><p><a href="https://sun-weihan.github.io/2023/05/16/我的HomeServer搭建历程（持续更新）/">https://sun-weihan.github.io/2023/05/16/我的HomeServer搭建历程（持续更新）/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>sunweihan</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-05-16</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-08-16</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E8%BF%90%E7%BB%B4/">运维</a><a class="link-muted mr-2" rel="tag" href="/tags/HomeServer/">HomeServer</a></div><div class="notification is-danger">You need to set <code>install_url</code> to use ShareThis. Please set it in <code>_config.yml</code>.</div></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/08/16/%E6%96%87%E7%AB%A0%E6%A0%BC%E5%BC%8F%E6%B5%8B%E8%AF%95/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">文章格式测试</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/04/19/hello-world/"><span class="level-item">Hello World</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">评论</h3><div class="notification is-danger">You forgot to set the <code>shortname</code> for Disqus. Please set it in <code>_config.yml</code>.</div></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.png" alt="sunweihan"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">sunweihan</p><p class="is-size-6 is-block">Developer</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Nanjing, China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">2</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/isunweihan" target="_blank" rel="noopener">关注我</a></div></div></div><!--!--><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-08-16T15:37:02.000Z">2023-08-16</time></p><p class="title"><a href="/2023/08/16/%E6%96%87%E7%AB%A0%E6%A0%BC%E5%BC%8F%E6%B5%8B%E8%AF%95/">文章格式测试</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-05-16T15:05:02.000Z">2023-05-16</time></p><p class="title"><a href="/2023/05/16/%E6%88%91%E7%9A%84HomeServer%E6%90%AD%E5%BB%BA%E5%8E%86%E7%A8%8B%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">我的HomeServer搭建历程（持续更新）</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-04-19T15:37:02.000Z">2023-04-19</time></p><p class="title"><a href="/2023/04/19/hello-world/">Hello World</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/HomeServer/"><span class="tag">HomeServer</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%BF%90%E7%BB%B4/"><span class="tag">运维</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/"><span class="level-start"><span class="level-item">2023</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">岁寒</a><p class="is-size-7"><span>&copy; 2023 sunweihan</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Visit on GitHub" href="https://github.com/isunweihan/isunweihan.github.io/"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
